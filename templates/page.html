@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #prediction-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+<div align="center">
+    <h2>使用Flask部署机器学习模型Demo——诈骗预测</h2>
+    <br>
+    <button onclick="showPredictionModal()">预测房价</button>
+    <br>
+    <div id="prediction-modal">
+        <h3>预测结果</h3>
+        <div id="predictionResult"></div>
+        <p id="prediction-result"></p>
+        <form action="/predict/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <br>
+            <button type="submit">上传文件</button>
+        </form>
+        <button onclick="startPrediction()">开始预测</button>
+        <button onclick="hidePredictionModal()">关闭</button>
+    </div>
+</div>
+
+<script>
+        const form = document.getElementById('uploadForm');
+        const predictionResult = document.getElementById('predictionResult');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+
+            axios.post('/predict/', formData)
+                .then(function(response) {
+                    const result = response.data.result;
+                    predictionResult.textContent = '预测结果: ' + result;
+                })
+                .catch(function(error) {
+                    console.error(error);
+                });
+        });
+    function showPredictionModal() {
+        var modal = document.getElementById("prediction-modal");
+        modal.style.display = "block";
+    }
+
+    function hidePredictionModal() {
+        var modal = document.getElementById("prediction-modal");
+        modal.style.display = "none";
+    }
+
+    function startPrediction() {
+        // 在这里添加开始预测的逻辑
+    }
+</script>
+
+</body>
+</html>
