@@ -12,6 +12,7 @@ def home():
     return render_template('page.html')
 
 def upload_file():
+    print('upload')
     file = request.files['file']
     result = predict(file)
     return result
